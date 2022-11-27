@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mapa</title>
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" 
+	  integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" 
+	  crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" 
+	    integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" 
+	    crossorigin=""></script>
+    <script src=
+	"https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+</head>
+<body>
+    <div id="map" style="height: 630px"></div>
+    <script>
+        var map = L.map('map').setView([9.7, -84], 8);
+        var cantones = L.geoJSON();//.addTo(map);
+	var temblores = L.geoJSON();
+	var modaGasolinerasVect = L.geoJSON();
+	var modaEscuelasVect = L.geoJSON();
+        
+        $.get('geo_cantones.geojson', function (data) {
+            cantones.addData(data);
+        });
+        
+        var errorOverlayUrl = 'https://cdn-icons-png.flaticon.com/512/110/110686.png';//8.038414438887674,-82.90100028589028    11.22446504527175,-85.60608539732317
+        var latLngBounds = L.latLngBounds([[11.219869545334685,-85.9502309618015], [8.03962609730269,-82.55270240995831]]);
+
+        var spline = L.imageOverlay('spline.png', latLngBounds, {
+            opacity: 1,
+            errorOverlayUrl: errorOverlayUrl,
+            alt: 'Mapa de calor',
+            interactive: true
+        });
+        
+        var subduccion = L.imageOverlay('SubduccionLocalHeap.png', latLngBounds, {
+            opacity: 1,
+            errorOverlayUrl: errorOverlayUrl,
+            alt: 'Subduccion',
+            interactive: true
+        });
+        
+        var fallamiento_local = L.imageOverlay('FallamientoLocalHeap.png', latLngBounds, {
+            opacity: 1,
+            errorOverlayUrl: errorOverlayUrl,
+            alt: 'Fallamiento local',
+            interactive: true
+        });
+        
+         $.getJSON('temblores.geojson', function (data) {
+             temblores.addData(data);
+         });
+        
+        $.getJSON('modaGasolinerasVect.geojson', function (data) {
+            modaGasolinerasVect.addData(data);
+        });
+        
+        $.getJSON('modaEscuelaVect.geojson', function (data) {
+            modaEscuelasVect.addData(data);
+        });
+
+        var overlayMaps = {
+	    "Mapa de calor": spline
+        };
+        
+        var layerControl = L.control.layers("", overlayMaps).addTo(map);
+        
+        layerControl.addOverlay(cantones, "Cantones");
+	layerControl.addOverlay(temblores, "Temblores");
+	layerControl.addOverlay(modaGasolinerasVect, "Moda de gasolineras con temblores (Vector)");
+        layerControl.addOverlay(modaEscuelasVect, "Moda de escuelas con temblores (Vector)");
+        layerControl.addOverlay(subduccion, "Filtrado por subduccion");
+	layerControl.addOverlay(fallamiento_local, "Filtrado por fallamiento local");
+        //layerControl.addOverlay(concidenciaTembloresRandom, "Coincidencia puntos random y temblores");
+	//layerControl.addOverlay(outVectTemblores, "Temblores (rast to vect)");
+        
+	 
+        </script> 
+</body>
+</html>

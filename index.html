@@ -1,41 +1,29 @@
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='utf-8' />
-    <title>Add custom markers in Mapbox GL JS</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1' />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css' rel='stylesheet' />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
+<!DOCTYPE html><html>
+<head> 
+	<meta charset="UTF-8">
+	<title>MBTiles y Leaflet</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+	
+	<style> 
+  	#map {
+   	width: 700px;
+  	 height: 600px; }
+</style> 
+</head>  
+	<body>
+	 <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+	 <script src="https://unpkg.com/sql.js@0.3.2/js/sql.js"></script>
+	 <script src="./Leaflet.TileLayer.MBTiles.js"></script>
 
-      #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-      }
-    </style>
-</head>
-<body>
+		<div id ="map"> </div> 
+	<script>
+	var map = new L.Map('map').fitWorld();
 
-<div id='map'></div>
+	var mb = L.tileLayer.mbTiles('Proyecto3.mbtiles', {
+		minZoom: 0,
+		maxZoom: 6
+	}).addTo(map);
 
-<script>
-
-mapboxgl.accessToken = 'YOUR_MAPBOX_ACCESS_TOKEN';
-
-const map = new mapboxgl.Map({
-  url:"https://studio.mapbox.com/tilesets/chalito66.crhv72bl/#6.72/9.596/-83.891"
-});
-
-// code from the next step will go here!
-
-</script>
-
-</body>
-</html>
+	</script>
+	</body> 
+</html> 

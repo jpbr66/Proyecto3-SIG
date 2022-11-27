@@ -17,7 +17,7 @@
 
 		<div id ="map"> </div> 
 	<script>
-	var map = new L.Map('map').fitWorld();
+	var map = new L.Map('map').setView([9.7, -84], 8);;
 
 	var mb = L.tileLayer.mbTiles('Proyecto3.mbtiles', {
 		minZoom: 6,
